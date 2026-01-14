@@ -6,7 +6,7 @@ Menu::Menu(SDL_Window* window, TTF_Font* font, SDL_Renderer* renderer)
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
     // Charger l'image de fond
-    loadBackground(renderer, "fond d'écran side début");
+    loadBackground(renderer, "Background_slide.PNG");
 
     // Dimensions des boutons
     float buttonWidth = 300;
