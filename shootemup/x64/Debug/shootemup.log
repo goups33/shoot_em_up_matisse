@@ -1,10 +1,2 @@
-﻿  gestionballe.cpp
-C:\Users\mmoreau\Downloads\shootemup\shootemup\shootemup\gestionballe.cpp(24,18): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-C:\Users\mmoreau\Downloads\shootemup\shootemup\shootemup\gestionballe.cpp(25,21): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-  Main.cpp
-C:\Users\mmoreau\Downloads\shootemup\shootemup\shootemup\Main.cpp(16,12): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-C:\Users\mmoreau\Downloads\shootemup\shootemup\shootemup\Main.cpp(52,13): warning C4244: 'initialisation' : conversion de 'Uint64' en 'float', perte possible de données
-C:\Users\mmoreau\Downloads\shootemup\shootemup\shootemup\Main.cpp(65,68): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mmoreau\Downloads\shootemup\shootemup\shootemup\Main.cpp(65,55): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-  Génération de code en cours...
-  shootemup.vcxproj -> C:\Users\mmoreau\Downloads\shootemup\shootemup\x64\Debug\shootemup.exe
+﻿  Menu.cpp
+  shootemup.vcxproj -> C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\x64\Debug\shootemup.exe
