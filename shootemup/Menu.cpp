@@ -52,9 +52,29 @@ Menu::~Menu() {
 }
 
 bool Menu::loadBackground(SDL_Renderer* renderer, const char* imagePath) {
-    SDL_Surface* surface = IMG_Load(imagePath);
+    // Essayer plusieurs chemins possibles
+    const char* paths[] = {
+        imagePath,
+        "./Background_slide.PNG",
+        "../Background_slide.PNG",
+        "../../Background_slide.PNG",
+        "./assets/Background_slide.PNG",
+        "../assets/Background_slide.PNG"
+    };
+
+    SDL_Surface* surface = nullptr;
+
+    for (const char* path : paths) {
+        surface = IMG_Load(path);
+        if (surface) {
+            SDL_Log("Image chargée depuis: %s", path);
+            break;
+        }
+    }
+
     if (!surface) {
-        SDL_Log("Erreur chargement image: %s", SDL_GetError());
+        SDL_Log("ERREUR: Impossible de charger l'image de fond!");
+        SDL_Log("Erreur SDL_image: %s", SDL_GetError());
         return false;
     }
 
@@ -108,8 +128,7 @@ void Menu::draw(SDL_Renderer* renderer) {
         );
 
         if (titleSurface) {
-            SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface);
-            if (titleTexture) {
+            if (SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface)) {
                 float titleX = windowWidth / 2.0f - titleSurface->w / 2.0f;
                 float titleY = 150;
 

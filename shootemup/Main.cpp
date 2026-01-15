@@ -32,7 +32,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    if (!SDL_CreateWindowAndRenderer("LE CUBE QUI BOUGE ", 1920, 1080, SDL_WINDOW_FULLSCREEN, &window, &renderer))
+    if (!SDL_CreateWindowAndRenderer("MILES: INTERFECTOR ROBOTUM ", 1920, 1080, SDL_WINDOW_FULLSCREEN, &window, &renderer))
         return 1;
 
     SDL_SetRenderLogicalPresentation(renderer, 1920, 1080, SDL_LOGICAL_PRESENTATION_LETTERBOX);
@@ -51,6 +51,28 @@ int main(int argc, char** argv)
     }
     else {
         SDL_Log("Police chargée avec succès!");
+    }
+
+    // CHARGER L'IMAGE DE FOND POUR LE JEU
+    SDL_Texture* gameBackgroundTexture = nullptr;
+    const char* backgroundPaths[] = {
+        "Background_slide.PNG",
+        "./Background_slide.PNG",
+        "../Background_slide.PNG",
+        "../../Background_slide.PNG",
+        "./assets/Background_slide.PNG",
+        "../assets/Background_slide.PNG"
+    };
+
+    SDL_Surface* bgSurface = nullptr;
+    for (const char* path : backgroundPaths) {
+        bgSurface = IMG_Load(path);
+        if (bgSurface) {
+            SDL_Log("Image de fond du jeu chargée depuis: %s", path);
+            gameBackgroundTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
+            SDL_DestroySurface(bgSurface);
+            break;
+        }
     }
 
     // Machine d'état
@@ -119,19 +141,20 @@ int main(int argc, char** argv)
             // Logique du jeu
             float now = SDL_GetTicks();
             gestion_enemi.time = gestion_enemi.time + now - timePrev;
-            float dt = now - timePrev;
 
-            if (dt > 0.6) {
+            if (float dt = now - timePrev; dt > 0.6) {
                 timePrev = now;
 
-                // Gestion mouvement
-                if (gestion_e.go_left) rectangle.x = rectangle.x - 10;
-                if (gestion_e.go_up) rectangle.y = rectangle.y - 10;
-                if (gestion_e.go_right) rectangle.x = rectangle.x + 10;
-                if (gestion_e.go_down) rectangle.y = rectangle.y + 10;
+                rectangle.x = 1920.0f / 2.0f - rectangle.w / 2.0f;  // Centre X
+                rectangle.y = 1080.0f / 2.0f - rectangle.h / 2.0f;  // Centre Y
 
-                // Gestion balle
-                if (gestion_e.shoot) gestion_b.shoobullet(rectangle.x, rectangle.y);
+
+                // Gestion balle avec direction
+                if (gestion_e.shoot) {
+                    gestion_b.shoobullet(rectangle.x + rectangle.w / 2,
+                        rectangle.y + rectangle.h / 2,
+                        gestion_e.shootDirection);
+                }
                 gestion_b.Update_bullet(renderer);
 
                 // Gestion enemi
@@ -150,6 +173,12 @@ int main(int argc, char** argv)
             // Dessiner le jeu
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
+
+            if (gameBackgroundTexture) {
+                SDL_FRect bgRect = { 0, 0, 1920, 1080 };
+                SDL_RenderTexture(renderer, gameBackgroundTexture, nullptr, &bgRect);
+            }
+
             gestion_b.renderbullet(renderer);
             gestion_enemi.show_enemi(renderer);
             SDL_SetRenderDrawColorFloat(renderer, 255, 0, 0, 0);
@@ -165,6 +194,9 @@ int main(int argc, char** argv)
     }
 
     // Nettoyage
+    if (gameBackgroundTexture) {
+        SDL_DestroyTexture(gameBackgroundTexture);
+    }
     if (font) {
         TTF_CloseFont(font);
     }

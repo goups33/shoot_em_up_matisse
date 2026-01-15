@@ -1,2 +1,7 @@
-﻿  Menu.cpp
+﻿  gestionballe.cpp
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(18,14): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(21,35): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(22,36): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(35,18): warning C4244: '=' : conversion de 'const int' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(36,18): warning C4244: '=' : conversion de 'const int' en 'float', perte possible de données
   shootemup.vcxproj -> C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\x64\Debug\shootemup.exe

@@ -10,7 +10,8 @@ public:
 	bool go_down = false;
 	bool shoot = false;
 
-	
+	int shootDirection = 0; // 0=droite, 1=haut-droite, 2=haut, 3=haut-gauche, 4=gauche, 5=bas-gauche, 6=bas, 7=bas-droite
+
 
 	bool UpdateEvents();
 };
