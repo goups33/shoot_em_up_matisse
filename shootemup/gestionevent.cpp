@@ -3,8 +3,7 @@
 
 bool gestionevent::UpdateEvents()
 {
-	SDL_Event event;
-	if (SDL_PollEvent(&event)) {
+	if (SDL_Event event; SDL_PollEvent(&event)) {
 		switch (event.type)
 		{
 		case SDL_EVENT_QUIT:

@@ -141,12 +141,13 @@ int main(int argc, char** argv)
             // Logique du jeu
             float now = SDL_GetTicks();
             gestion_enemi.time = gestion_enemi.time + now - timePrev;
+            float dt = now - timePrev;
 
             if (float dt = now - timePrev; dt > 0.6) {
                 timePrev = now;
 
                 rectangle.x = 1920.0f / 2.0f - rectangle.w / 2.0f;  // Centre X
-                rectangle.y = 1080.0f / 2.0f - rectangle.h / 2.0f;  // Centre Y
+                rectangle.y = 1800.0f / 2.0f - rectangle.h / 2.0f;  // Centre Y
 
 
                 // Gestion balle avec direction

@@ -43,10 +43,7 @@ void gestionballe::renderbullet(SDL_Renderer* renderer){
 
 }
 
-int gestionballe::shoobullet(int x, int y, int direction)
-{
-	return 0;
-}
+
 
 void gestionballe::Update_bullet(SDL_Renderer* renderer) {
 	//SDL_GetRenderViewport()
