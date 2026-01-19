@@ -44,9 +44,9 @@ bool gestionevent::UpdateEvents(SDL_Event* event)
 		case SDLK_LEFT:
 			go_left = true;
 			break;
-		case SDLK_DOWN:
+		/*case SDLK_DOWN:
 			go_down = true;
-			break;
+			break;*/
 		}
 
 		break;

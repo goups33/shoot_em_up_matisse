@@ -12,29 +12,29 @@ Camera::Camera(float screenWidth, float screenHeight, int worldMultiplier)
     worldHeight = screenHeight * worldMultiplier;
 
     // Commencer au centre du monde
-    x = (worldWidth - viewWidth) / 2.0f;
-    y = (worldHeight - viewHeight) / 2.0f;
+    x = (0);
+    y = (0);
 }
 
-void Camera::moveLeft(float dt) {
+void Camera::moveLeft(float [[maybe_unused]] ) {
     x -= speed;
     // Limiter aux bords du monde
     x = std::max(0.0f, x);
 }
 
-void Camera::moveRight(float dt) {
+void Camera::moveRight(float [[maybe_unused]] ) {
     x += speed;
     // Limiter aux bords du monde
     x = std::min(worldWidth - viewWidth, x);
 }
 
-void Camera::moveUp(float dt) {
+void Camera::moveUp(float [[maybe_unused]] ) {
     y -= speed;
     // Limiter aux bords du monde
     y = std::max(0.0f, y);
 }
 
-void Camera::moveDown(float dt) {
+void Camera::moveDown(float [[maybe_unused]] ) {
     y += speed;
     // Limiter aux bords du monde
     y = std::min(worldHeight - viewHeight, y);

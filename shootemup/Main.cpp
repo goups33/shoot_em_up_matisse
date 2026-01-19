@@ -41,8 +41,7 @@ int main(int argc, char** argv)
     // Pour la v-sync, pas touche sinon jump de frames
     SDL_SetRenderVSync(renderer, 1);
 
-    // Charger une police (vous devrez avoir un fichier .ttf)
-    // Essayer plusieurs chemins possibles pour la police
+    // Charger une police
     TTF_Font* font = TTF_OpenFont("arial.ttf", 32);
     if (!font) {
         font = TTF_OpenFont("C:/Windows/Fonts/arial.ttf", 32);
