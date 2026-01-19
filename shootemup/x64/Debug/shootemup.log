@@ -6,10 +6,11 @@ C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(142,52)
 C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(143,52): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(154,50): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
 C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(155,50): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
+  GameState.cpp
   Main.cpp
 C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(12,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
 C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(109,33): warning C4244: 'initialisation' : conversion de 'Uint64' en 'float', perte possible de données
+  Menu.cpp
   Player.cpp
-  World.cpp
   Génération de code en cours...
   shootemup.vcxproj -> C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\x64\Debug\shootemup.exe

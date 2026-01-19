@@ -2,6 +2,16 @@
 enum class GameState {
     MENU,
     PLAYING,
-    QUIT
+    QUIT,
+    Idle,
+    movingLeft,
+    movingRight
 };
 
+enum class PlayerDirection {
+    None,
+    Left,
+    Right,
+    Up,
+    Down
+};

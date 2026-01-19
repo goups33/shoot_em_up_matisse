@@ -24,6 +24,7 @@ Player::~Player() {
     }
 }
 
+
 bool Player::loadSprites(SDL_Renderer* renderer) {
     // Charger le sprite Idle
     const char* idlePaths[] = {
@@ -91,7 +92,23 @@ void Player::updateAnimation(float deltaTime, bool isMoving) {
 }
 
 void Player::update(float deltaTime, bool movingLeft, bool movingRight, bool movingUp, bool movingDown) {
-    bool isMoving = movingLeft || movingRight || movingUp || movingDown;
+    if (movingLeft) {
+        direction = PlayerDirection::Left;
+    }
+    else if (movingRight) {
+        direction = PlayerDirection::Right;
+    }
+    else if (movingUp) {
+        direction = PlayerDirection::Up;
+    }
+    else if (movingDown) {
+        direction = PlayerDirection::Down;
+    }
+    else {
+        direction = PlayerDirection::None;
+    }
+
+    bool isMoving = (direction != PlayerDirection::None);
     updateAnimation(deltaTime, isMoving);
 }
 
@@ -100,8 +117,8 @@ void Player::render(SDL_Renderer* renderer, const Camera& camera) {
     SDL_FRect rect;
     rect.x = 1920.0f / 2.0f - width / 2.0f;
     rect.y = 1080.0f / 2.0f - height / 2.0f;
-    rect.w = width;
-    rect.h = height;
+    rect.w = width * 4;
+    rect.h = height * 4;
 
     // Choisir le sprite à afficher
     SDL_Texture* currentSprite = nullptr;
@@ -114,7 +131,17 @@ void Player::render(SDL_Renderer* renderer, const Camera& camera) {
     }
 
     if (currentSprite) {
-        SDL_RenderTexture(renderer, currentSprite, nullptr, &rect);
+        SDL_FlipMode flip = SDL_FLIP_NONE;
+
+        if (direction == PlayerDirection::Left) // vers la gauche ?
+        {
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        else
+        {
+            flip = SDL_FLIP_NONE;
+        }
+        SDL_RenderTextureRotated(renderer, currentSprite, nullptr, &rect, 0, nullptr, flip);
     }
     else {
         // Fallback: carré rouge si pas de sprite

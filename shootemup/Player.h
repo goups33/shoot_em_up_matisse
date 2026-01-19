@@ -2,6 +2,7 @@
 #include <SDL3/SDL.h>
 #include <vector>
 #include "Camera.h"
+#include "GameState.h"
 
 class Player {
 public:
@@ -32,5 +33,6 @@ private:
     float animationSpeed; // Temps entre chaque frame en ms
     bool isWalking;
 
+    PlayerDirection direction = PlayerDirection::None;
     void updateAnimation(float deltaTime, bool isMoving);
 };

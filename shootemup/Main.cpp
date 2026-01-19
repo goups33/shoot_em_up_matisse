@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     Menu menu(window, font, renderer);
 
     // Initialiser le jeu
-    Game* game = new Game(renderer, font);
+    auto* game = new Game(renderer, font);
 
     bool keepGoing = true;
 
