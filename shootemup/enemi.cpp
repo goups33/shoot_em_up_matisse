@@ -15,7 +15,7 @@ void enemi::spawn_enemi() {
 void enemi::show_enemi(SDL_Renderer* renderer) {
 	for (size_t i = 0; i < gestion_enemi.size(); i++)
 	{
-		mechan& b = gestion_enemi[i];
+		mechan const& b = gestion_enemi[i];
 
 		SDL_FRect rectangle;
 		rectangle.x = b.x;
@@ -34,7 +34,6 @@ void enemi::Update_enemi(SDL_Renderer* renderer) {
 
 	std::vector<size_t> toDelete;
 
-	//for (Bullet& b : gestionbullet) {
 	for (size_t i = 0; i < gestion_enemi.size(); i++)
 	{
 		mechan& b = gestion_enemi[i];
