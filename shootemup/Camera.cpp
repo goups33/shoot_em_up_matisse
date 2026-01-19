@@ -11,7 +11,7 @@ Camera::Camera(float screenWidth, float screenHeight, int worldMultiplier)
     worldWidth = screenWidth * worldMultiplier;
     worldHeight = screenHeight * worldMultiplier;
 
-    // Commencer au centre du monde
+
     x = (0);
     y = (0);
 }

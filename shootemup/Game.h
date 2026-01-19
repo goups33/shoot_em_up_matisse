@@ -1,0 +1,48 @@
+#pragma once
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
+#include "Camera.h"
+#include "Player.h"
+#include "World.h"
+#include "gestionballe.h"
+#include "gestionevent.h"
+#include "enemi.h"
+#include "colision.h"
+#include "Button.h"
+
+class Game {
+public:
+    Game(SDL_Renderer* renderer, TTF_Font* font);
+    ~Game();
+
+    void handleEvent(SDL_Event& event);
+    void update(float deltaTime);
+    void render(SDL_Renderer* renderer);
+
+    bool isShowingTransition() const { return showWorldTransition; }
+    bool shouldReturnToMenu() const { return returnToMenu; }
+    void resetReturnToMenu() { returnToMenu = false; }
+
+private:
+    // Composants du jeu
+    Camera camera;
+    Player* player;
+    World* world;
+    gestionballe gestion_b;
+    gestionevent gestion_e;
+    enemi gestion_enemi;
+    colision gest_colision;
+
+    // UI
+    TTF_Font* font;
+    Button buttonContinue;
+    Button buttonQuitGame;
+
+    // États
+    bool showWorldTransition;
+    bool returnToMenu;
+    float timePrev;
+
+    void renderTransition(SDL_Renderer* renderer);
+    void renderGame(SDL_Renderer* renderer);
+};

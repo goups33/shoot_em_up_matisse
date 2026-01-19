@@ -2,21 +2,10 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
 
-#include <algorithm>
-#include <fstream>
-#include <iostream>
-
-#include "gestionballe.h"
-#include "gestionevent.h"
-#include "enemi.h"
-#include "colision.h"
-#include "Button.h"
-#include "Select.h"
 #include "GameState.h"
 #include "Menu.h"
-#include "Camera.h"
-
-using namespace std;
+#include "Game.h"
+#include <xiosbase>
 
 int main(int argc, char** argv)
 {
@@ -38,7 +27,7 @@ int main(int argc, char** argv)
 
     SDL_SetRenderLogicalPresentation(renderer, 1920, 1080, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
-    // Pour la v-sync, pas touche sinon jump de frames
+    // Pour la v-sync
     SDL_SetRenderVSync(renderer, 1);
 
     // Charger une police
@@ -49,50 +38,20 @@ int main(int argc, char** argv)
     if (!font) {
         font = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", 32);
     }
-    else {
+    if (font) {
         SDL_Log("Police chargée avec succès!");
-    }
-
-    // CHARGER L'IMAGE DE FOND POUR LE JEU
-    SDL_Texture* gameBackgroundTexture = nullptr;
-    const char* backgroundPaths[] = {
-        "Background_slide.PNG",
-        "./Background_slide.PNG",
-        "../Background_slide.PNG",
-        "../../Background_slide.PNG",
-        "./assets/Background_slide.PNG",
-        "../assets/Background_slide.PNG"
-    };
-
-    SDL_Surface* bgSurface = nullptr;
-    for (const char* path : backgroundPaths) {
-        bgSurface = IMG_Load(path);
-        if (bgSurface) {
-            SDL_Log("Image de fond du jeu chargée depuis: %s", path);
-            gameBackgroundTexture = SDL_CreateTextureFromSurface(renderer, bgSurface);
-            SDL_DestroySurface(bgSurface);
-            break;
-        }
     }
 
     // Machine d'état
     GameState currentState = GameState::MENU;
 
-    // Initialiser le menu (passer le renderer maintenant)
+    // Initialiser le menu
     Menu menu(window, font, renderer);
 
-    // Objets du jeu
-    gestionballe gestion_b;
-    gestionevent gestion_e;
-    enemi gestion_enemi;
-    colision gest_colision;
-    Camera camera(1920.0f, 1080.0f, 10);
-    SDL_FRect rectangle;
-    rectangle.w = 40;
-    rectangle.h = 40;
+    // Initialiser le jeu
+    Game* game = new Game(renderer, font);
 
     bool keepGoing = true;
-    float timePrev = 0;
 
     while (keepGoing && currentState != GameState::QUIT)
     {
@@ -119,10 +78,7 @@ int main(int argc, char** argv)
                     currentState = GameState::MENU;
                 }
                 else {
-                    // Traiter les événements du jeu
-                    if (!gestion_e.UpdateEvents(&event)) {
-                        keepGoing = false;
-                    }
+                    game->handleEvent(event);
                 }
                 break;
 
@@ -140,105 +96,22 @@ int main(int argc, char** argv)
 
         case GameState::PLAYING:
         {
-            // Logique du jeu
-            float now = SDL_GetTicks();
-            gestion_enemi.time = gestion_enemi.time + now - timePrev;
-
-            if (float dt = now - timePrev; dt > 0.6) {
-                timePrev = now;
-
-                if (gestion_e.go_left)
-                    camera.moveLeft(dt);
-                if (gestion_e.go_right)
-                    camera.moveRight(dt);
-                if (gestion_e.go_up)
-                    camera.moveUp(dt);
-                if (gestion_e.go_down)
-                    camera.moveDown(dt);
-
-                rectangle.x = 1920.0f / 2.0f - rectangle.w / 2.0f;  // Centre X
-                rectangle.y = 1800.0f / 2.0f - rectangle.h / 2.0f;  // Centre Y
-
-                float playerWorldX = camera.getPlayerWorldX();
-                float playerWorldY = camera.getPlayerWorldY();
-
-                // Gestion balle avec direction
-                if (gestion_e.shoot && gestion_e.canShoot(now)) {
-                    gestion_b.shoobullet(
-                        playerWorldX,
-                        playerWorldY,
-                        gestion_e.shootDirection);
-                }
-                gestion_b.Update_bullet(renderer);
-
-                // Gestion enemi
-                if (gestion_enemi.time >= gestion_enemi.spawn_cooldown)
-                    gestion_enemi.spawn_enemi();
-                gestion_enemi.Update_enemi(renderer);
-
-                // Gestion des colisions des balles
-                gest_colision.gestion_colision_balle(&gestion_b, &gestion_enemi);
-
+            // Vérifier si on doit retourner au menu
+            if (game->shouldReturnToMenu()) {
+                currentState = GameState::MENU;
+                game->resetReturnToMenu();
+                // Recréer le jeu pour reset l'état
+                delete game;
+                game = new Game(renderer, font);
             }
+            else {
+                // Mettre à jour le jeu
+                float deltaTime = SDL_GetTicks();
+                game->update(deltaTime);
 
-            // Dessiner le jeu
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderClear(renderer);
-
-            // Dessiner le fond répété (effet tuile)
-            if (gameBackgroundTexture) {
-                // Calculer combien de tuiles sont nécessaires
-                int tilesX = (int)(camera.worldWidth / 1920.0f) + 1;
-                int tilesY = (int)(camera.worldHeight / 1080.0f) + 1;
-
-                // Offset pour le défilement
-                auto startTileX = (int)(camera.x / 1920.0f);
-                auto startTileY = (int)(camera.y / 1080.0f);
-
-                float offsetX = -(camera.x - startTileX * 1920.0f);
-                float offsetY = -(camera.y - startTileY * 1080.0f);
-
-                // Dessiner les tuiles visibles
-                for (int ty = 0; ty < 2; ty++) {
-                    for (int tx = 0; tx < 2; tx++) {
-                        SDL_FRect bgRect;
-                        bgRect.x = offsetX + tx * 1920.0f;
-                        bgRect.y = offsetY + ty * 1080.0f;
-                        bgRect.w = 1920.0f;
-                        bgRect.h = 1080.0f;
-                        SDL_RenderTexture(renderer, gameBackgroundTexture, nullptr, &bgRect);
-                    }
-                }
+                // Dessiner le jeu
+                game->render(renderer);
             }
-
-            // Dessiner les balles (convertir coordonnées monde vers écran)
-            for (const auto& bullet : gestion_b.gestionbullet) {
-                SDL_FRect bulletRect;
-                bulletRect.x = camera.worldToScreenX(bullet.x);
-                bulletRect.y = camera.worldToScreenY(bullet.y);
-                bulletRect.w = 10;
-                bulletRect.h = 5;
-
-                SDL_SetRenderDrawColor(renderer, 255, 255, 0, SDL_ALPHA_OPAQUE);
-                SDL_RenderFillRect(renderer, &bulletRect);
-            }
-
-            // Dessiner les ennemis (convertir coordonnées monde vers écran)
-            for (const auto& enemy : gestion_enemi.gestion_enemi) {
-                SDL_FRect enemyRect;
-                enemyRect.x = camera.worldToScreenX(enemy.x);
-                enemyRect.y = camera.worldToScreenY(enemy.y);
-                enemyRect.w = 20;
-                enemyRect.h = 20;
-
-                SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
-                SDL_RenderFillRect(renderer, &enemyRect);
-            }
-
-            // Dessiner le personnage (toujours au centre)
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-            SDL_RenderFillRect(renderer, &rectangle);
-
             break;
         }
 
@@ -250,9 +123,7 @@ int main(int argc, char** argv)
     }
 
     // Nettoyage
-    if (gameBackgroundTexture) {
-        SDL_DestroyTexture(gameBackgroundTexture);
-    }
+    delete game;
     if (font) {
         TTF_CloseFont(font);
     }
