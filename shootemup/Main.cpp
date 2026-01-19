@@ -153,8 +153,9 @@ int main(int argc, char** argv)
                 rectangle.y = 1800.0f / 2.0f - rectangle.h / 2.0f;  // Centre Y
 
                 // Gestion balle avec direction
-                if (gestion_e.shoot) {
-                    gestion_b.shoobullet(rectangle.x + rectangle.w / 2,
+                if (gestion_e.shoot && gestion_e.canShoot(now)) {
+                    gestion_b.shoobullet(
+                        rectangle.x + rectangle.w / 2,
                         rectangle.y + rectangle.h / 2,
                         gestion_e.shootDirection);
                 }

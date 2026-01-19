@@ -1,4 +1,8 @@
-﻿  colision.cpp
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\colision.cpp(22,25): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\colision.cpp(23,26): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+﻿  Main.cpp
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(22,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(146,23): warning C4244: 'initialisation' : conversion de 'Uint64' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(159,37): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(158,37): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+  gestionevent.cpp
+  Génération de code en cours...
   shootemup.vcxproj -> C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\x64\Debug\shootemup.exe

@@ -12,7 +12,17 @@ public:
 
 	int shootDirection = 0; // 0=droite, 1=haut, 2=gauche, 3=bas
 
+	float fireRate = 100.0f;
+	float lastShotTime = 0.0F;
 
 	bool UpdateEvents(SDL_Event* event);
+
+	bool canShoot(float currentTime) {
+		if (currentTime - lastShotTime >= fireRate) {
+			lastShotTime = currentTime;
+			return true;
+		}
+		return false;
+	}
 };
 
