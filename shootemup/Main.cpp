@@ -103,25 +103,29 @@ int main(int argc, char** argv)
             if (event.type == SDL_EVENT_QUIT) {
                 keepGoing = false;
             }
-            else if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_ESCAPE) {
-                // ESC retourne au menu ou quitte selon l'état
-                if (currentState == GameState::PLAYING) {
-                    currentState = GameState::MENU;
-                }
-                else {
-                    keepGoing = false;
-                }
-            }
 
             // Gérer les événements selon l'état
             switch (currentState) {
             case GameState::MENU:
                 menu.handleEvent(event, currentState);
+
+                // ESC quitte depuis le menu
+                if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_ESCAPE) {
+                    keepGoing = false;
+                }
                 break;
 
             case GameState::PLAYING:
-                // Traiter les événements du jeu
-                gestion_e.UpdateEvents();
+                // ESC retourne au menu depuis le jeu
+                if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_ESCAPE) {
+                    currentState = GameState::MENU;
+                }
+                else {
+                    // Traiter les événements du jeu
+                    if (!gestion_e.UpdateEvents(&event)) {
+                        keepGoing = false;
+                    }
+                }
                 break;
 
             default:
@@ -141,14 +145,12 @@ int main(int argc, char** argv)
             // Logique du jeu
             float now = SDL_GetTicks();
             gestion_enemi.time = gestion_enemi.time + now - timePrev;
-            float dt = now - timePrev;
 
             if (float dt = now - timePrev; dt > 0.6) {
                 timePrev = now;
 
                 rectangle.x = 1920.0f / 2.0f - rectangle.w / 2.0f;  // Centre X
                 rectangle.y = 1800.0f / 2.0f - rectangle.h / 2.0f;  // Centre Y
-
 
                 // Gestion balle avec direction
                 if (gestion_e.shoot) {

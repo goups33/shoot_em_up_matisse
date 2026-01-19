@@ -1,2 +1,4 @@
-﻿  gestionevent.cpp
+﻿  colision.cpp
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\colision.cpp(22,25): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\colision.cpp(23,26): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
   shootemup.vcxproj -> C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\x64\Debug\shootemup.exe

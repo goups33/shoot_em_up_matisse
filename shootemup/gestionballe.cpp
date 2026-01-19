@@ -15,8 +15,8 @@ int gestionballe::shoobullet(int x,int y, int direction)
 	balletemp.x = x;
 	balletemp.y = y;
 
-	float angle = direction * (M_PI / 4.0f); // 45 degrés entre chaque direction
-	float speed = 15.0f;
+	float angle = direction * (M_PI / 2.0f); // 90 degrés entre chaque direction
+	float speed = 2.0f;
 
 	balletemp.velocityX = cos(angle) * speed;
 	balletemp.velocityY = -sin(angle) * speed; // Négatif car Y augmente vers le bas
@@ -57,7 +57,6 @@ void gestionballe::Update_bullet(SDL_Renderer* renderer) {
 
 			if (b.x > 1935)
 				toDelete.push_back(i);
-			b.x = b.x + 10;
 
 			b.x += b.velocityX;
 			b.y += b.velocityY;

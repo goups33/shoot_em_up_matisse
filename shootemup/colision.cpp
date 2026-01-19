@@ -1,8 +1,9 @@
 #include "colision.h"
+#include <set>
 
 void colision::gestion_colision_balle(gestionballe* balle, enemi* malotru) {
-	std::vector <int> delete_mechan;
-	std::vector <int> delete_balle;
+	std::set <int> delete_mechan;
+	std::set <int> delete_balle;
 	for (size_t i = 0; i < malotru->gestion_enemi.size(); i++) {
 		SDL_Rect e;
 		e.x = malotru->gestion_enemi[i].x;
@@ -18,8 +19,8 @@ void colision::gestion_colision_balle(gestionballe* balle, enemi* malotru) {
 			b.h = 10;
 			
 			if (SDL_HasRectIntersection(&e, &b)) {
-				delete_balle.push_back(j);
-				delete_mechan.push_back(i);
+				delete_balle.insert(j);
+				delete_mechan.insert(i);
 				printf("POUET");
 			}
 		}
