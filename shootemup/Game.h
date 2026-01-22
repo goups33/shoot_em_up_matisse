@@ -10,6 +10,10 @@
 #include "colision.h"
 #include "Button.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 class Game {
 public:
     Game(SDL_Renderer* renderer, TTF_Font* font);
@@ -24,7 +28,6 @@ public:
     void resetReturnToMenu() { returnToMenu = false; }
 
 private:
-    // Composants du jeu
     Camera camera;
     Player* player;
     World* world;
@@ -33,16 +36,18 @@ private:
     enemi gestion_enemi;
     colision gest_colision;
 
-    // UI
     TTF_Font* font;
     Button buttonContinue;
     Button buttonQuitGame;
 
-    // États
     bool showWorldTransition;
     bool returnToMenu;
     float timePrev;
 
+    SDL_Renderer* renderer;
+    SDL_Texture* bulletTexture;
+
     void renderTransition(SDL_Renderer* renderer);
     void renderGame(SDL_Renderer* renderer);
+    void loadBulletSprite();
 };

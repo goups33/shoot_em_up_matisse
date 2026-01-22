@@ -1,19 +1,22 @@
 #include "Game.h"
+#include <SDL3_image/SDL_image.h>
 
 Game::Game(SDL_Renderer* renderer, TTF_Font* font)
-    : camera(1920.0f, 1080.0f, 10),
+    : camera(1920.0f, 1080.0f, 10), bulletTexture(nullptr),
     player(nullptr),
     world(nullptr),
     font(font),
     showWorldTransition(false),
     returnToMenu(false),
-    timePrev(0)
+    timePrev(0),
+    renderer(renderer)
 {
-    // Créer le joueur et le monde
     player = new Player(renderer);
     world = new World(renderer);
 
-    // Créer les boutons de transition
+    // Charger le sprite de balle
+    loadBulletSprite();
+
     buttonContinue = createButton(1920.0f / 2.0f - 150, 1080.0f / 2.0f - 100, 300, 80, "CONTINUER");
     buttonQuitGame = createButton(1920.0f / 2.0f - 150, 1080.0f / 2.0f + 20, 300, 80, "QUITTER");
     buttonQuitGame.color.r = 180;
@@ -27,17 +30,39 @@ Game::Game(SDL_Renderer* renderer, TTF_Font* font)
 Game::~Game() {
     delete player;
     delete world;
+    if (bulletTexture) {
+        SDL_DestroyTexture(bulletTexture);
+    }
+}
+
+void Game::loadBulletSprite() {
+    const char* bulletPaths[] = {
+        "balle.PNG",
+        "./balle.PNG",
+        "../balle.PNG",
+        "../../balle.PNG",
+        "./assets/balle.PNG",
+        "../assets/balle.PNG"
+    };
+
+    for (const char* path : bulletPaths) {
+        SDL_Surface* surface = IMG_Load(path);
+        if (surface) {
+            bulletTexture = SDL_CreateTextureFromSurface(renderer, surface);
+            SDL_DestroySurface(surface);
+            SDL_Log("Sprite balle chargé depuis: %s", path);
+            break;
+        }
+    }
 }
 
 void Game::handleEvent(SDL_Event& event) {
     if (showWorldTransition) {
-        // Gérer les événements de l'écran de transition
         handleButtonEvent(&buttonContinue, &event);
         handleButtonEvent(&buttonQuitGame, &event);
 
         if (isButtonClicked(&buttonContinue, &event)) {
             showWorldTransition = false;
-            // Réinitialiser la caméra pour le nouveau monde
             camera.x = 0;
             camera.y = 0;
         }
@@ -47,14 +72,13 @@ void Game::handleEvent(SDL_Event& event) {
         }
     }
     else {
-        // Traiter les événements du jeu
         gestion_e.UpdateEvents(&event);
     }
 }
 
 void Game::update(float deltaTime) {
     if (showWorldTransition) {
-        return; // Pas de mise à jour pendant la transition
+        return;
     }
 
     float now = SDL_GetTicks();
@@ -63,7 +87,6 @@ void Game::update(float deltaTime) {
     if (float dt = now - timePrev; dt > 0.6) {
         timePrev = now;
 
-        // Déplacer la caméra
         if (gestion_e.go_left)
             camera.moveLeft(dt);
         if (gestion_e.go_right)
@@ -73,19 +96,34 @@ void Game::update(float deltaTime) {
         if (gestion_e.go_down)
             camera.moveDown(dt);
 
-        // Mettre à jour le joueur
         player->update(dt, gestion_e.go_left, gestion_e.go_right, gestion_e.go_up, gestion_e.go_down);
 
         float playerWorldX = camera.getPlayerWorldX();
         float playerWorldY = camera.getPlayerWorldY();
 
-        // Gestion balle avec direction
-        if (gestion_e.shoot && gestion_e.canShoot(now)) {
-            gestion_b.shoobullet(
-                playerWorldX,
-                playerWorldY,
-                gestion_e.shootDirection);
+        // Déterminer la direction de tir automatiquement
+        int shootDir = gestion_e.shootDirection;
+        PlayerDirection playerDir = player->getDirection();
+
+        // Si le joueur se déplace, tirer dans cette direction
+        if (playerDir == PlayerDirection::Left) {
+            shootDir = 2; // Gauche
         }
+        else if (playerDir == PlayerDirection::Right) {
+            shootDir = 0; // Droite
+        }
+        else if (playerDir == PlayerDirection::Up) {
+            shootDir = 1; // Haut
+        }
+        else if (playerDir == PlayerDirection::Down) {
+            shootDir = 3; // Bas
+        }
+
+        // Gestion du tir
+        if (gestion_e.shoot && gestion_e.canShoot(now)) {
+            gestion_b.shoobullet(playerWorldX, playerWorldY, shootDir);
+        }
+
         gestion_b.Update_bullet(nullptr, camera.x, camera.y, camera.viewWidth, camera.viewHeight);
 
         // Gestion ennemis
@@ -96,7 +134,6 @@ void Game::update(float deltaTime) {
         // Gestion des collisions
         gest_colision.gestion_colision_balle(&gestion_b, &gestion_enemi);
 
-        // Vérifier si on doit passer à l'écran de transition
         if (world->shouldTransition(playerWorldX)) {
             showWorldTransition = true;
         }
@@ -107,7 +144,6 @@ void Game::renderTransition(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 20, 20, 40, 255);
     SDL_RenderClear(renderer);
 
-    // Afficher le texte "DEUXIEME MONDE"
     if (font) {
         SDL_Color textColor = { 255, 255, 255, 255 };
         SDL_Surface* textSurface = TTF_RenderText_Blended(font, "DEUXIEME MONDE", 0, textColor);
@@ -124,7 +160,6 @@ void Game::renderTransition(SDL_Renderer* renderer) {
         }
     }
 
-    // Afficher les boutons
     renderButton(renderer, &buttonContinue, font);
     renderButton(renderer, &buttonQuitGame, font);
 }
@@ -133,19 +168,26 @@ void Game::renderGame(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    // Dessiner le monde (fonds d'écran)
     world->render(renderer, camera);
 
-    // Dessiner les balles
+    // Dessiner les balles avec le sprite
     for (const auto& bullet : gestion_b.gestionbullet) {
         SDL_FRect bulletRect;
         bulletRect.x = camera.worldToScreenX(bullet.x);
         bulletRect.y = camera.worldToScreenY(bullet.y);
-        bulletRect.w = 10;
-        bulletRect.h = 5;
+        bulletRect.w = 20;  // Taille du sprite de balle
+        bulletRect.h = 20;
 
-        SDL_SetRenderDrawColor(renderer, 255, 255, 0, SDL_ALPHA_OPAQUE);
-        SDL_RenderFillRect(renderer, &bulletRect);
+        if (bulletTexture) {
+            // Calculer l'angle de rotation basé sur la vélocité
+            float angle = atan2(bullet.velocityY, bullet.velocityX) * (180.0f / M_PI);
+            SDL_RenderTextureRotated(renderer, bulletTexture, nullptr, &bulletRect, angle, nullptr, SDL_FLIP_NONE);
+        }
+        else {
+            // Fallback si le sprite n'est pas chargé
+            SDL_SetRenderDrawColor(renderer, 255, 255, 0, SDL_ALPHA_OPAQUE);
+            SDL_RenderFillRect(renderer, &bulletRect);
+        }
     }
 
     // Dessiner les ennemis
@@ -160,7 +202,6 @@ void Game::renderGame(SDL_Renderer* renderer) {
         SDL_RenderFillRect(renderer, &enemyRect);
     }
 
-    // Dessiner le joueur
     player->render(renderer, camera);
 }
 

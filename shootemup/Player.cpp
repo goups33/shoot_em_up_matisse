@@ -143,9 +143,8 @@ void Player::render(SDL_Renderer* renderer, const Camera& camera) {
         }
         SDL_RenderTextureRotated(renderer, currentSprite, nullptr, &rect, 0, nullptr, flip);
     }
-    else {
-        // Fallback: carré rouge si pas de sprite
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderFillRect(renderer, &rect);
-    }
+}
+
+PlayerDirection Player::getDirection() const {
+    return direction;
 }

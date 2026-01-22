@@ -14,6 +14,7 @@ public:
 
     float getWorldX() const { return worldX; }
     float getWorldY() const { return worldY; }
+    PlayerDirection getDirection() const;
 
     bool loadSprites(SDL_Renderer* renderer);
 

@@ -16,7 +16,7 @@ int gestionballe::shoobullet(int x, int y, int direction)
 	balletemp.y = y;
 
 	float angle = direction * (M_PI / 2.0f); // 90 degrés entre chaque direction
-	float speed = 15.0f; // Augmenté de 2.0f à 15.0f pour être plus rapide que le joueur
+	float speed = 15.0f;
 
 	balletemp.velocityX = cos(angle) * speed;
 	balletemp.velocityY = -sin(angle) * speed; // Négatif car Y augmente vers le bas
