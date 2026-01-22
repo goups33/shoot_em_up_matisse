@@ -6,6 +6,7 @@ Player::Player(SDL_Renderer* renderer)
     width(40), height(40),
     idleSprite(nullptr),
     attackSprite(nullptr),
+    attackupSprite(nullptr),
     currentFrame(0),
     animationTime(0),
     animationSpeed(100.0f),
@@ -24,6 +25,9 @@ Player::~Player() {
     if (attackSprite) {
         SDL_DestroyTexture(attackSprite);
     }
+    if (attackupSprite) {
+        SDL_DestroyTexture(attackupSprite);
+    }
     for (auto sprite : walkSprites) {
         if (sprite) {
             SDL_DestroyTexture(sprite);
@@ -32,6 +36,7 @@ Player::~Player() {
 }
 
 bool Player::loadSprites(SDL_Renderer* renderer) {
+    // Charger le sprite Idle
     const char* idlePaths[] = {
         "Idle.PNG",
         "./Idle.PNG",
@@ -51,7 +56,7 @@ bool Player::loadSprites(SDL_Renderer* renderer) {
         }
     }
 
-    // Charger le sprite d'attaque
+    // Charger le sprite d'attaque normale
     const char* attackPaths[] = {
         "attack.PNG",
         "./attack.PNG",
@@ -71,6 +76,27 @@ bool Player::loadSprites(SDL_Renderer* renderer) {
         }
     }
 
+    // Charger le sprite d'attaque vers le haut
+    const char* attackupPaths[] = {
+        "tir_haut.PNG",
+        "./tir_haut.PNG",
+        "../tir_haut.PNG",
+        "../../tir_haut.PNG",
+        "./assets/tir_haut.PNG",
+        "../assets/tir_haut.PNG"
+    };
+
+    for (const char* path : attackupPaths) {
+        SDL_Surface* surface = IMG_Load(path);
+        if (surface) {
+            attackupSprite = SDL_CreateTextureFromSurface(renderer, surface);
+            SDL_DestroySurface(surface);
+            SDL_Log("Sprite Attack Up chargé depuis: %s", path);
+            break;
+        }
+    }
+
+    // Charger les sprites de marche
     const char* walkPaths[][6] = {
         {"marche_1.PNG", "./marche_1.PNG", "../marche_1.PNG", "../../marche_1.PNG", "./assets/marche_1.PNG", "../assets/marche_1.PNG"},
         {"marche_2.PNG", "./marche_2.PNG", "../marche_2.PNG", "../../marche_2.PNG", "./assets/marche_2.PNG", "../assets/marche_2.PNG"},
@@ -163,9 +189,9 @@ void Player::render(SDL_Renderer* renderer, const Camera& camera) {
 
     SDL_Texture* currentSprite = nullptr;
 
-    // Priorité à l'animation d'attaque
-    if (isAttacking && attackSprite) {
-        currentSprite = attackSprite;
+    // Priorité à l'animation d'attaque vers le haut
+    if (isAttacking && attackupSprite) {
+        currentSprite = attackupSprite;
     }
     else if (isWalking && currentFrame < walkSprites.size() && walkSprites[currentFrame]) {
         currentSprite = walkSprites[currentFrame];

@@ -9,7 +9,8 @@ Game::Game(SDL_Renderer* renderer, TTF_Font* font)
     returnToMenu(false),
     timePrev(0),
     renderer(renderer),
-    bulletTexture(nullptr)
+    bulletTexture(nullptr),
+    enemyTexture(nullptr)
 {
     player = new Player(renderer);
     world = new World(renderer);
@@ -60,7 +61,6 @@ void Game::loadBulletSprite() {
     }
 }
 
-
 void Game::loadEnemySprite() {
     const char* enemyPaths[] = {
         "enemi_3.PNG",
@@ -81,7 +81,6 @@ void Game::loadEnemySprite() {
         }
     }
 }
-
 
 void Game::handleEvent(SDL_Event& event) {
     if (showWorldTransition) {
@@ -117,9 +116,20 @@ void Game::update(float deltaTime) {
         // Vérifier si on attaque avec Z
         if (gestion_e.attackUp && gestion_e.canShoot(now)) {
             player->startAttack();
-            float playerWorldX = camera.getPlayerWorldX();
-            float playerWorldY = camera.getPlayerWorldY();
-            gestion_b.shoobullet(playerWorldX, playerWorldY, 1); // 1 = vers le haut
+
+            // Position fixe du joueur à l'écran
+            float screenPlayerX = 1920.0f / 2.0f;
+            float screenPlayerY = 1080.0f * 0.8f;
+
+            // Convertir en coordonnées monde pour la balle
+            float worldBulletX = camera.screenToWorldX(screenPlayerX);
+            float worldBulletY = camera.screenToWorldY(screenPlayerY);
+
+            // Ajuster pour que la balle sorte du haut du personnage
+            worldBulletX += 20;  // Milieu horizontal du personnage
+            worldBulletY -= 10;  // Juste au-dessus du personnage
+
+            gestion_b.shoobullet(worldBulletX, worldBulletY, 1); // 1 = vers le haut
         }
 
         // Si le joueur n'est pas en train d'attaquer, il peut se déplacer
@@ -136,8 +146,9 @@ void Game::update(float deltaTime) {
 
         player->update(dt, gestion_e.go_left, gestion_e.go_right, gestion_e.go_up, gestion_e.go_down);
 
-        float playerWorldX = camera.getPlayerWorldX();
-        float playerWorldY = camera.getPlayerWorldY();
+        // Position fixe du joueur à l'écran
+        float screenPlayerX = 1920.0f / 2.0f;
+        float screenPlayerY = 1080.0f * 0.8f;
 
         if (!player->getIsAttacking()) {
             int shootDir = gestion_e.shootDirection;
@@ -157,7 +168,31 @@ void Game::update(float deltaTime) {
             }
 
             if (gestion_e.shoot && gestion_e.canShoot(now)) {
-                gestion_b.shoobullet(playerWorldX, playerWorldY, shootDir);
+                // Convertir la position écran en position monde
+                float worldBulletX = camera.screenToWorldX(screenPlayerX);
+                float worldBulletY = camera.screenToWorldY(screenPlayerY);
+
+                // Ajuster la position de départ selon la direction
+                switch (shootDir) {
+                case 0: // Droite
+                    worldBulletX += 40;  // À droite du personnage
+                    worldBulletY += 20;  // Au milieu vertical
+                    break;
+                case 2: // Gauche
+                    worldBulletX -= 10;  // À gauche du personnage
+                    worldBulletY += 20;  // Au milieu vertical
+                    break;
+                case 1: // Haut
+                    worldBulletX += 20;  // Au milieu horizontal
+                    worldBulletY -= 10;  // Au-dessus du personnage
+                    break;
+                case 3: // Bas
+                    worldBulletX += 20;  // Au milieu horizontal
+                    worldBulletY += 40;  // En-dessous du personnage
+                    break;
+                }
+
+                gestion_b.shoobullet(worldBulletX, worldBulletY, shootDir);
             }
         }
 
@@ -171,6 +206,8 @@ void Game::update(float deltaTime) {
         // Gestion des collisions
         gest_colision.gestion_colision_balle(&gestion_b, &gestion_enemi);
 
+        // Vérifier la transition de monde
+        float playerWorldX = camera.getPlayerWorldX();
         if (world->shouldTransition(playerWorldX)) {
             showWorldTransition = true;
         }

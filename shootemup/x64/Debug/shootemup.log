@@ -1,18 +1,13 @@
 ﻿  Game.cpp
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(111,15): warning C4244: 'initialisation' : conversion de 'Uint64' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(122,48): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(122,34): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(160,52): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(160,38): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(213,52): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(214,52): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(220,25): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(233,50): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(234,50): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-  Main.cpp
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(12,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(109,33): warning C4244: 'initialisation' : conversion de 'Uint64' en 'float', perte possible de données
-  Player.cpp
-  gestionevent.cpp
-  Génération de code en cours...
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(110,15): warning C4244: 'initialisation' : conversion de 'Uint64' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(132,48): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(132,34): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(195,52): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(195,38): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(250,52): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(251,52): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(257,25): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(270,50): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(271,50): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
+  LINK : C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\x64\Debug\shootemup.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
   shootemup.vcxproj -> C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\x64\Debug\shootemup.exe

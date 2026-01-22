@@ -28,6 +28,7 @@ private:
 
     SDL_Texture* idleSprite;
     SDL_Texture* attackSprite;
+    SDL_Texture* attackupSprite;
     std::vector<SDL_Texture*> walkSprites;
 
     int currentFrame;
