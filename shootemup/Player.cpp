@@ -5,10 +5,14 @@ Player::Player(SDL_Renderer* renderer)
     : worldX(1920.0f / 2.0f), worldY(1080.0f / 2.0f),
     width(40), height(40),
     idleSprite(nullptr),
+    attackSprite(nullptr),
     currentFrame(0),
     animationTime(0),
-    animationSpeed(100.0f),  // 100ms entre chaque frame
-    isWalking(false)
+    animationSpeed(100.0f),
+    isWalking(false),
+    isAttacking(false),
+    attackAnimationTime(0),
+    attackAnimationDuration(300.0f)
 {
     loadSprites(renderer);
 }
@@ -17,6 +21,9 @@ Player::~Player() {
     if (idleSprite) {
         SDL_DestroyTexture(idleSprite);
     }
+    if (attackSprite) {
+        SDL_DestroyTexture(attackSprite);
+    }
     for (auto sprite : walkSprites) {
         if (sprite) {
             SDL_DestroyTexture(sprite);
@@ -24,9 +31,7 @@ Player::~Player() {
     }
 }
 
-
 bool Player::loadSprites(SDL_Renderer* renderer) {
-    // Charger le sprite Idle
     const char* idlePaths[] = {
         "Idle.PNG",
         "./Idle.PNG",
@@ -46,8 +51,26 @@ bool Player::loadSprites(SDL_Renderer* renderer) {
         }
     }
 
+    // Charger le sprite d'attaque
+    const char* attackPaths[] = {
+        "attack.PNG",
+        "./attack.PNG",
+        "../attack.PNG",
+        "../../attack.PNG",
+        "./assets/attack.PNG",
+        "../assets/attack.PNG"
+    };
 
-    // Charger les sprites de marche
+    for (const char* path : attackPaths) {
+        SDL_Surface* surface = IMG_Load(path);
+        if (surface) {
+            attackSprite = SDL_CreateTextureFromSurface(renderer, surface);
+            SDL_DestroySurface(surface);
+            SDL_Log("Sprite Attack chargé depuis: %s", path);
+            break;
+        }
+    }
+
     const char* walkPaths[][6] = {
         {"marche_1.PNG", "./marche_1.PNG", "../marche_1.PNG", "../../marche_1.PNG", "./assets/marche_1.PNG", "../assets/marche_1.PNG"},
         {"marche_2.PNG", "./marche_2.PNG", "../marche_2.PNG", "../../marche_2.PNG", "./assets/marche_2.PNG", "../assets/marche_2.PNG"},
@@ -91,7 +114,26 @@ void Player::updateAnimation(float deltaTime, bool isMoving) {
     }
 }
 
+void Player::startAttack() {
+    if (!isAttacking) {
+        isAttacking = true;
+        attackAnimationTime = 0;
+    }
+}
+
 void Player::update(float deltaTime, bool movingLeft, bool movingRight, bool movingUp, bool movingDown) {
+    // Gérer l'animation d'attaque
+    if (isAttacking) {
+        attackAnimationTime += deltaTime;
+        if (attackAnimationTime >= attackAnimationDuration) {
+            isAttacking = false;
+            attackAnimationTime = 0;
+        }
+        // Pendant l'attaque, on ne peut pas se déplacer
+        return;
+    }
+
+    // Déplacement normal
     if (movingLeft) {
         direction = PlayerDirection::Left;
     }
@@ -113,17 +155,19 @@ void Player::update(float deltaTime, bool movingLeft, bool movingRight, bool mov
 }
 
 void Player::render(SDL_Renderer* renderer, const Camera& camera) {
-    // Position à l'écran (toujours au centre horizontalement, en bas verticalement)
     SDL_FRect rect;
     rect.x = 1920.0f / 2.0f - width / 2.0f;
-    rect.y = 1080.0f / 2.0f - height / 2.0f;
+    rect.y = 1080.0f * 0.8f - height / 2.0f;
     rect.w = width * 4;
     rect.h = height * 4;
 
-    // Choisir le sprite à afficher
     SDL_Texture* currentSprite = nullptr;
 
-    if (isWalking && currentFrame < walkSprites.size() && walkSprites[currentFrame]) {
+    // Priorité à l'animation d'attaque
+    if (isAttacking && attackSprite) {
+        currentSprite = attackSprite;
+    }
+    else if (isWalking && currentFrame < walkSprites.size() && walkSprites[currentFrame]) {
         currentSprite = walkSprites[currentFrame];
     }
     else if (idleSprite) {
@@ -133,12 +177,10 @@ void Player::render(SDL_Renderer* renderer, const Camera& camera) {
     if (currentSprite) {
         SDL_FlipMode flip = SDL_FLIP_NONE;
 
-        if (direction == PlayerDirection::Left) // vers la gauche ?
-        {
+        if (direction == PlayerDirection::Left) {
             flip = SDL_FLIP_HORIZONTAL;
         }
-        else
-        {
+        else {
             flip = SDL_FLIP_NONE;
         }
         SDL_RenderTextureRotated(renderer, currentSprite, nullptr, &rect, 0, nullptr, flip);
@@ -147,4 +189,8 @@ void Player::render(SDL_Renderer* renderer, const Camera& camera) {
 
 PlayerDirection Player::getDirection() const {
     return direction;
+}
+
+bool Player::getIsAttacking() const {
+    return isAttacking;
 }

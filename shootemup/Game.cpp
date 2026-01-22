@@ -2,20 +2,21 @@
 #include <SDL3_image/SDL_image.h>
 
 Game::Game(SDL_Renderer* renderer, TTF_Font* font)
-    : camera(1920.0f, 1080.0f, 10), bulletTexture(nullptr),
-    player(nullptr),
+    : camera(1920.0f, 1080.0f, 10), player(nullptr),
     world(nullptr),
     font(font),
     showWorldTransition(false),
     returnToMenu(false),
     timePrev(0),
-    renderer(renderer)
+    renderer(renderer),
+    bulletTexture(nullptr)
 {
     player = new Player(renderer);
     world = new World(renderer);
 
     // Charger le sprite de balle
     loadBulletSprite();
+    loadEnemySprite();
 
     buttonContinue = createButton(1920.0f / 2.0f - 150, 1080.0f / 2.0f - 100, 300, 80, "CONTINUER");
     buttonQuitGame = createButton(1920.0f / 2.0f - 150, 1080.0f / 2.0f + 20, 300, 80, "QUITTER");
@@ -32,6 +33,9 @@ Game::~Game() {
     delete world;
     if (bulletTexture) {
         SDL_DestroyTexture(bulletTexture);
+    }
+    if (enemyTexture) {
+        SDL_DestroyTexture(enemyTexture);
     }
 }
 
@@ -55,6 +59,29 @@ void Game::loadBulletSprite() {
         }
     }
 }
+
+
+void Game::loadEnemySprite() {
+    const char* enemyPaths[] = {
+        "enemi_3.PNG",
+        "./enemi_3.PNG",
+        "../enemi_3.PNG",
+        "../../enemi_3.PNG",
+        "./assets/enemi_3.PNG",
+        "../assets/enemi_3.PNG",
+    };
+
+    for (const char* path : enemyPaths) {
+        SDL_Surface* surface = IMG_Load(path);
+        if (surface) {
+            enemyTexture = SDL_CreateTextureFromSurface(renderer, surface);
+            SDL_DestroySurface(surface);
+            SDL_Log("Sprite ennemi chargé depuis: %s", path);
+            break;
+        }
+    }
+}
+
 
 void Game::handleEvent(SDL_Event& event) {
     if (showWorldTransition) {
@@ -87,41 +114,51 @@ void Game::update(float deltaTime) {
     if (float dt = now - timePrev; dt > 0.6) {
         timePrev = now;
 
-        if (gestion_e.go_left)
-            camera.moveLeft(dt);
-        if (gestion_e.go_right)
-            camera.moveRight(dt);
-        if (gestion_e.go_up)
-            camera.moveUp(dt);
-        if (gestion_e.go_down)
-            camera.moveDown(dt);
+        // Vérifier si on attaque avec Z
+        if (gestion_e.attackUp && gestion_e.canShoot(now)) {
+            player->startAttack();
+            float playerWorldX = camera.getPlayerWorldX();
+            float playerWorldY = camera.getPlayerWorldY();
+            gestion_b.shoobullet(playerWorldX, playerWorldY, 1); // 1 = vers le haut
+        }
+
+        // Si le joueur n'est pas en train d'attaquer, il peut se déplacer
+        if (!player->getIsAttacking()) {
+            if (gestion_e.go_left)
+                camera.moveLeft(dt);
+            if (gestion_e.go_right)
+                camera.moveRight(dt);
+            if (gestion_e.go_up)
+                camera.moveUp(dt);
+            if (gestion_e.go_down)
+                camera.moveDown(dt);
+        }
 
         player->update(dt, gestion_e.go_left, gestion_e.go_right, gestion_e.go_up, gestion_e.go_down);
 
         float playerWorldX = camera.getPlayerWorldX();
         float playerWorldY = camera.getPlayerWorldY();
 
-        // Déterminer la direction de tir automatiquement
-        int shootDir = gestion_e.shootDirection;
-        PlayerDirection playerDir = player->getDirection();
+        if (!player->getIsAttacking()) {
+            int shootDir = gestion_e.shootDirection;
+            PlayerDirection playerDir = player->getDirection();
 
-        // Si le joueur se déplace, tirer dans cette direction
-        if (playerDir == PlayerDirection::Left) {
-            shootDir = 2; // Gauche
-        }
-        else if (playerDir == PlayerDirection::Right) {
-            shootDir = 0; // Droite
-        }
-        else if (playerDir == PlayerDirection::Up) {
-            shootDir = 1; // Haut
-        }
-        else if (playerDir == PlayerDirection::Down) {
-            shootDir = 3; // Bas
-        }
+            if (playerDir == PlayerDirection::Left) {
+                shootDir = 2;
+            }
+            else if (playerDir == PlayerDirection::Right) {
+                shootDir = 0;
+            }
+            else if (playerDir == PlayerDirection::Up) {
+                shootDir = 1;
+            }
+            else if (playerDir == PlayerDirection::Down) {
+                shootDir = 3;
+            }
 
-        // Gestion du tir
-        if (gestion_e.shoot && gestion_e.canShoot(now)) {
-            gestion_b.shoobullet(playerWorldX, playerWorldY, shootDir);
+            if (gestion_e.shoot && gestion_e.canShoot(now)) {
+                gestion_b.shoobullet(playerWorldX, playerWorldY, shootDir);
+            }
         }
 
         gestion_b.Update_bullet(nullptr, camera.x, camera.y, camera.viewWidth, camera.viewHeight);
@@ -195,11 +232,12 @@ void Game::renderGame(SDL_Renderer* renderer) {
         SDL_FRect enemyRect;
         enemyRect.x = camera.worldToScreenX(enemy.x);
         enemyRect.y = camera.worldToScreenY(enemy.y);
-        enemyRect.w = 20;
-        enemyRect.h = 20;
+        enemyRect.w = 40;
+        enemyRect.h = 40;
 
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
-        SDL_RenderFillRect(renderer, &enemyRect);
+        if (enemyTexture) {
+            SDL_RenderTexture(renderer, enemyTexture, nullptr, &enemyRect);
+        }
     }
 
     player->render(renderer, camera);

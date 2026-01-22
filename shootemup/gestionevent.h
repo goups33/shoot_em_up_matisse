@@ -9,6 +9,7 @@ public:
 	bool go_right = false;
 	bool go_down = false;
 	bool shoot = false;
+	bool attackUp = false;
 
 	int shootDirection = 0; // 0=droite, 1=haut, 2=gauche, 3=bas
 

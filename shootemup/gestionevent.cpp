@@ -1,8 +1,6 @@
 #include "gestionevent.h"
 #include "gestionballe.h"
 
-
-
 bool gestionevent::UpdateEvents(SDL_Event* event)
 {
 	switch (event->type)
@@ -19,13 +17,14 @@ bool gestionevent::UpdateEvents(SDL_Event* event)
 			shoot = true;
 			break;
 
+			// Z pour attaque spéciale (tire vers le haut)
+		case SDLK_Z:
+			attackUp = true;
+			break;
 
-			// Touches pour les 8 directions de tir
+			// Touches pour les directions de tir
 		case SDLK_D:
 			shootDirection = 0; // Droite
-			break;
-		case SDLK_Z:
-			shootDirection = 1; // Haut
 			break;
 		case SDLK_Q:
 			shootDirection = 2; // Gauche
@@ -33,7 +32,6 @@ bool gestionevent::UpdateEvents(SDL_Event* event)
 		case SDLK_S:
 			shootDirection = 3; // Bas
 			break;
-
 
 		case SDLK_RIGHT:
 			go_right = true;
@@ -44,9 +42,6 @@ bool gestionevent::UpdateEvents(SDL_Event* event)
 		case SDLK_LEFT:
 			go_left = true;
 			break;
-		/*case SDLK_DOWN:
-			go_down = true;
-			break;*/
 		}
 
 		break;
@@ -56,8 +51,10 @@ bool gestionevent::UpdateEvents(SDL_Event* event)
 		case SDLK_SPACE:
 			shoot = false;
 			break;
+		case SDLK_Z:
+			attackUp = false;
+			break;
 
-			// Relâcher les touches de déplacement
 		case SDLK_RIGHT:
 			go_right = false;
 			break;
@@ -73,6 +70,6 @@ bool gestionevent::UpdateEvents(SDL_Event* event)
 		}
 		break;
 	}
-	
+
 	return true;
 }

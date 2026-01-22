@@ -46,8 +46,10 @@ private:
 
     SDL_Renderer* renderer;
     SDL_Texture* bulletTexture;
+    SDL_Texture* enemyTexture;
 
     void renderTransition(SDL_Renderer* renderer);
     void renderGame(SDL_Renderer* renderer);
     void loadBulletSprite();
+    void loadEnemySprite();
 };
