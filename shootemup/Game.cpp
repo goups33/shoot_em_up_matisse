@@ -152,9 +152,8 @@ void Game::update(float deltaTime) {
 
         if (!player->getIsAttacking()) {
             int shootDir = gestion_e.shootDirection;
-            PlayerDirection playerDir = player->getDirection();
 
-            if (playerDir == PlayerDirection::Left) {
+            if (PlayerDirection playerDir = player->getDirection(); playerDir == PlayerDirection::Left) {
                 shootDir = 2;
             }
             else if (playerDir == PlayerDirection::Right) {

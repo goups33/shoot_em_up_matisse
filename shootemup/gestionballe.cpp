@@ -6,7 +6,7 @@
 #include <cmath>
 
 #ifndef M_PI
-#define M_PI 3.14159265358979323846
+#define M_PI 3.14
 #endif
 
 int gestionballe::shoobullet(int x, int y, int direction)

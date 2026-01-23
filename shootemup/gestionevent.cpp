@@ -17,7 +17,7 @@ bool gestionevent::UpdateEvents(SDL_Event* event)
 			shoot = true;
 			break;
 
-			// Z pour attaque spéciale (tire vers le haut)
+			// Z pour attaquer en haut
 		case SDLK_Z:
 			attackUp = true;
 			break;

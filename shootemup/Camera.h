@@ -8,7 +8,7 @@ public:
     float y;  // Position Y de la caméra
     float speed;  // Vitesse de défilement
 
-    // Limites du monde (10 fois l'écran)
+    // Limites du monde
     float worldWidth;
     float worldHeight;
 
