@@ -49,10 +49,6 @@ private:
     float nextButtonY;
     float GameOverButtonWidth;
     float GameOverButtonHeight;
-    Button buttonLevel1;
-    Button buttonLevel2;
-    Button buttonLevel3;
-    Button buttonLevel4;
 
     // Boutons pour l'écran de transition
     Button buttonBackToMenu;

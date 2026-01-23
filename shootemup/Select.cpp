@@ -20,16 +20,6 @@ Select::Select(SDL_Window* window, TTF_Font* font) : font(font), inTransition(fa
     nextButtonY = centerY + spacingBetweenButtons / 2;
     buttonNextWorld = createButton(nextButtonX, nextButtonY, transitionButtonWidth, transitionButtonHeight, "Next World");
 
-    // Bouton de Game Over
-    GameOverButtonWidth = windowHeight * 0.3;
-    GameOverButtonHeight = windowHeight * 0.1;
-
-    centerX = windowWidth / 2;
-    centerY = windowHeight / 2;
-
-    menuButtonX = centerX - GameOverButtonWidth / 2;
-    menuButtonY = centerY - GameOverButtonHeight / 2;
-    buttonBackToMenu = createButton(menuButtonX, menuButtonY, GameOverButtonWidth, GameOverButtonHeight, "Menu");
 }
 
 void Select::showWorldTransition(int worldNumber) {
@@ -71,14 +61,6 @@ void Select::draw(SDL_Renderer* renderer) {
         // Dessiner les boutons
         renderButton(renderer, &buttonBackToMenu, font);
         renderButton(renderer, &buttonNextWorld, font);
-    }
-    else if (inGameOver) {
-        // Dessiner l'écran de Game over
-        SDL_SetRenderDrawColorFloat(renderer, 0.2f, 0.2f, 0.3f, 1.0f);
-        SDL_RenderFillRect(renderer, nullptr);
-
-        // Dessiner le bouton
-        renderButton(renderer, &buttonBackToMenu, font);
     }
     else {
         // Dessiner l'ecran de selection normal

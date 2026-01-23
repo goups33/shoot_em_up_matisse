@@ -1,29 +1,7 @@
-﻿  Camera.cpp
-  Game.cpp
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(110,15): warning C4244: 'initialisation' : conversion de 'Uint64' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(132,48): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(132,34): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(194,52): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(194,38): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(249,52): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(250,52): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(256,25): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(269,50): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Game.cpp(270,50): warning C4244: 'argument' : conversion de 'const int' en 'float', perte possible de données
-  Main.cpp
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(12,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Main.cpp(109,33): warning C4244: 'initialisation' : conversion de 'Uint64' en 'float', perte possible de données
-  Player.cpp
-  World.cpp
-  colision.cpp
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\colision.cpp(22,25): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\colision.cpp(23,26): warning C4267: 'argument' : conversion de 'size_t' en 'int', perte possible de données
-  gestionballe.cpp
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(18,14): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(21,35): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(22,36): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(35,18): warning C4244: '=' : conversion de 'const int' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\gestionballe.cpp(36,18): warning C4244: '=' : conversion de 'const int' en 'float', perte possible de données
-  gestionevent.cpp
-  Génération de code en cours...
+﻿  Select.cpp
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(8,42): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(9,43): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(10,42): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(12,27): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(13,28): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
   shootemup.vcxproj -> C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\x64\Debug\shootemup.exe

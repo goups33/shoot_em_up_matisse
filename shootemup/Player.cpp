@@ -169,9 +169,6 @@ void Player::update(float deltaTime, bool movingLeft, bool movingRight, bool mov
     else if (movingUp) {
         direction = PlayerDirection::Up;
     }
-    else if (movingDown) {
-        direction = PlayerDirection::Down;
-    }
     else {
         direction = PlayerDirection::None;
     }

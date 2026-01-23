@@ -162,9 +162,6 @@ void Game::update(float deltaTime) {
             else if (playerDir == PlayerDirection::Up) {
                 shootDir = 1;
             }
-            else if (playerDir == PlayerDirection::Down) {
-                shootDir = 3;
-            }
 
             if (gestion_e.shoot && gestion_e.canShoot(now)) {
                 // Convertir la position écran en position monde

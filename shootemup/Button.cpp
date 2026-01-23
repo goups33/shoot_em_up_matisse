@@ -59,9 +59,8 @@ void handleButtonEvent(Button* btn, SDL_Event* e) {
 bool isButtonClicked(Button* btn, SDL_Event* e) {
     if (e->type == SDL_EVENT_MOUSE_BUTTON_UP && e->button.button == SDL_BUTTON_LEFT) {
         float x = e->button.x;
-        float y = e->button.y;
 
-        if (btn->wasPressedOn && isPointInButton(btn, x, y)) {
+        if (float y = e->button.y; btn->wasPressedOn && isPointInButton(btn, x, y)) {
             btn->wasPressedOn = false;
             return true;
         }
@@ -82,8 +81,7 @@ void renderButton(SDL_Renderer* renderer, Button* btn, TTF_Font* font) {
     if (font && !btn->text.empty()) {
         SDL_Surface* textSurface = TTF_RenderText_Blended(font, btn->text.c_str(), 0, btn->textColor);
         if (textSurface) {
-            SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-            if (textTexture) {
+            if (SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface)) {
                 float textX = btn->rect.x + (btn->rect.w - textSurface->w) / 2;
                 float textY = btn->rect.y + (btn->rect.h - textSurface->h) / 2;
 
