@@ -4,8 +4,8 @@ enum class GameState {
     PLAYING,
     QUIT,
     Idle,
-    movingLeft,
-    movingRight
+    MovingLeft,
+    MovingRight
 };
 
 enum class PlayerDirection {
