@@ -117,7 +117,6 @@ void Game::update(float deltaTime) {
         if (gestion_e.attackUp && gestion_e.canShoot(now)) {
             player->startAttack();
 
-            // Position fixe du joueur à l'écran
             float screenPlayerX = 1920.0f / 2.0f;
             float screenPlayerY = 1080.0f * 0.8f;
 
@@ -126,8 +125,8 @@ void Game::update(float deltaTime) {
             float worldBulletY = camera.screenToWorldY(screenPlayerY);
 
             // Ajuster pour que la balle sorte du haut du personnage
-            worldBulletX += 20;  // Milieu horizontal du personnage
-            worldBulletY -= 10;  // Juste au-dessus du personnage
+            worldBulletX += 20;
+            worldBulletY -= 10;
 
             gestion_b.shoobullet(worldBulletX, worldBulletY, 1); // 1 = vers le haut
         }
@@ -171,20 +170,20 @@ void Game::update(float deltaTime) {
                 // Ajuster la position de départ selon la direction
                 switch (shootDir) {
                 case 0: // Droite
-                    worldBulletX += 40;  // À droite du personnage
-                    worldBulletY += 20;  // Au milieu vertical
+                    worldBulletX += 40;
+                    worldBulletY += 20;
                     break;
                 case 2: // Gauche
-                    worldBulletX -= 10;  // À gauche du personnage
-                    worldBulletY += 20;  // Au milieu vertical
+                    worldBulletX -= 10;
+                    worldBulletY += 20;
                     break;
                 case 1: // Haut
-                    worldBulletX += 20;  // Au milieu horizontal
-                    worldBulletY -= 10;  // Au-dessus du personnage
+                    worldBulletX += 20;
+                    worldBulletY -= 10;
                     break;
                 case 3: // Bas
-                    worldBulletX += 20;  // Au milieu horizontal
-                    worldBulletY += 40;  // En-dessous du personnage
+                    worldBulletX += 20;
+                    worldBulletY += 40;
                     break;
                 }
 
@@ -249,7 +248,7 @@ void Game::renderGame(SDL_Renderer* renderer) {
         bulletRect.h = 20;
 
         if (bulletTexture) {
-            // Calculer l'angle de rotation basé sur la vélocité
+            // Angle de rotation basé sur la vélocité
             float angle = atan2(bullet.velocityY, bullet.velocityX) * (180.0f / M_PI);
             SDL_RenderTextureRotated(renderer, bulletTexture, nullptr, &bulletRect, angle, nullptr, SDL_FLIP_NONE);
         }
