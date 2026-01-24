@@ -56,25 +56,6 @@ bool Player::loadSprites(SDL_Renderer* renderer) {
         }
     }
 
-    // Charger le sprite d'attaque normale
-    const char* attackPaths[] = {
-        "attack.PNG",
-        "./attack.PNG",
-        "../attack.PNG",
-        "../../attack.PNG",
-        "./assets/attack.PNG",
-        "../assets/attack.PNG"
-    };
-
-    for (const char* path : attackPaths) {
-        SDL_Surface* surface = IMG_Load(path);
-        if (surface) {
-            attackSprite = SDL_CreateTextureFromSurface(renderer, surface);
-            SDL_DestroySurface(surface);
-            SDL_Log("Sprite Attack chargé depuis: %s", path);
-            break;
-        }
-    }
 
     // Charger le sprite d'attaque vers le haut
     const char* attackupPaths[] = {
