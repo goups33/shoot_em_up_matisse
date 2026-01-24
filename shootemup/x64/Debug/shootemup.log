@@ -1,7 +1,1 @@
-﻿  Select.cpp
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(8,42): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(9,43): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(10,42): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(12,27): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\shootemup\Select.cpp(13,28): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
-  shootemup.vcxproj -> C:\Users\mlozach\Documents\GitHub\shoot_em_up_matisse\x64\Debug\shootemup.exe
+﻿  shootemup.vcxproj -> C:\Users\maell\Documents\Github\shoot_em_up_matisse\x64\Debug\shootemup.exe
