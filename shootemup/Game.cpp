@@ -195,7 +195,7 @@ void Game::update(float deltaTime) {
 
         // Gestion ennemis
         if (gestion_enemi.time >= gestion_enemi.spawn_cooldown)
-            gestion_enemi.spawn_enemi();
+            gestion_enemi.spawn_enemi(camera.x, camera.viewWidth);
         gestion_enemi.Update_enemi(nullptr);
 
         // Gestion des collisions

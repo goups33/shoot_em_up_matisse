@@ -1,11 +1,11 @@
 #include "enemi.h"
 #include <random>
 
-void enemi::spawn_enemi() {
+void enemi::spawn_enemi(float cameraX, float cameraViewWidth) {
 	int y = rand() %  1000 + 50;
 	time = 0.0;
 	mechan enemitemp;
-	enemitemp.x = 1900;
+	enemitemp.x = cameraX + cameraViewWidth + 50;
 	enemitemp.y = y;
 	gestion_enemi.push_back(enemitemp);
 }
@@ -38,7 +38,7 @@ void enemi::Update_enemi(SDL_Renderer* renderer) {
 	{
 		mechan& b = gestion_enemi[i];
 
-		if (b.x < 0)
+		if (b.x < -250)
 			toDelete.push_back(i);
 		b.x = b.x -10 ;
 

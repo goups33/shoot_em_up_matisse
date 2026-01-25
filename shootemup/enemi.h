@@ -18,7 +18,7 @@ public:
 	std::vector<mechan> gestion_enemi;
 
 	void show_enemi(SDL_Renderer* renderer);
-	void spawn_enemi();
+	void spawn_enemi(float cameraX, float cameraViewWidth);
 	void Update_enemi(SDL_Renderer* renderer);
 };
 
